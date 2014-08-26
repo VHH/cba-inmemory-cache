@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 /**
  * This is the main class for accessing MemoryCache.
  *
- * @author Van Hai Ho <van.hai.ho@gmail.com>
+ * @author Van Hai Ho 
  *
  */
 public class InMemoryCache {

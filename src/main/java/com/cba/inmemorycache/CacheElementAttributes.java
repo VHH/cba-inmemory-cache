@@ -6,7 +6,7 @@ import java.io.Serializable;
  * <code>CacheElementAttributes</code> contains the attributes for the elements
  * put in a cache. It is used to track the life of the object.
  * 
- * @author Van Hai Ho <van.hai.ho@gmail.com>
+ * @author Van Hai Ho 
  *
  */
 public class CacheElementAttributes implements Serializable {
@@ -107,9 +107,6 @@ public class CacheElementAttributes implements Serializable {
 
 	/**
 	 * Sets the create time for this CacheElement object.
-	 * 
-	 * @param createTime
-	 *            The time when this CacheElement object is created.
 	 */
 	public void setCreateTime() {
 		createTime = System.currentTimeMillis();
@@ -117,7 +114,6 @@ public class CacheElementAttributes implements Serializable {
 
 	/**
 	 * For logging and debugging purposes.
-	 * <p>
 	 * 
 	 * @return String info about the values.
 	 */

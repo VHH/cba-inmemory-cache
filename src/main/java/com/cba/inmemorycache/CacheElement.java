@@ -9,7 +9,7 @@ import java.io.Serializable;
  * <code>CacheElement</code> wraps the object to be cached, with the properties
  * to be used to track the life of the object in the cache.
  * 
- * @author Van Hai Ho <van.hai.ho@gmail.com>
+ * @author Van Hai Ho 
  *
  */
 public class CacheElement implements Serializable {
@@ -39,11 +39,10 @@ public class CacheElement implements Serializable {
 
 	/**
 	 * Constructor for the CacheElement object
-	 * <p>
 	 * 
-	 * @param cacheName
-	 * @param key
-	 * @param value
+	 * @param cacheName The name of the cache in which this object is cached.
+	 * @param key The key of the object.
+	 * @param value The object.
 	 */
 	public CacheElement(String cacheName, Serializable key, Serializable value) {
 		this.cacheName = cacheName;
@@ -54,11 +53,10 @@ public class CacheElement implements Serializable {
 
 	/**
 	 * Constructor for the CacheElement object
-	 * <p>
 	 * 
-	 * @param cacheName
-	 * @param key
-	 * @param value
+	 * @param cacheName The name of the cache in which this object is cached.
+	 * @param key The key of the object.
+	 * @param value The object.
 	 */
 	public CacheElement(String cacheName, Serializable key, Object value) {
 		this(cacheName, key, (Serializable) value);
@@ -66,7 +64,6 @@ public class CacheElement implements Serializable {
 
 	/**
 	 * Gets the name of the cache where this element is cached.
-	 * <p>
 	 * 
 	 * @return The cacheName value
 	 */
@@ -76,7 +73,6 @@ public class CacheElement implements Serializable {
 
 	/**
 	 * Gets the key attribute of the CacheElement object
-	 * <p>
 	 * 
 	 * @return The key value
 	 */
@@ -86,7 +82,6 @@ public class CacheElement implements Serializable {
 
 	/**
 	 * Gets the value attribute of the CacheElement object
-	 * <p>
 	 * 
 	 * @return The value value
 	 */
@@ -184,7 +179,7 @@ public class CacheElement implements Serializable {
 	}
 
 	/**
-	 * Sets the current time this element is accessed.
+	 * Sets the current time as the time this element is last accessed.
 	 */
 	public void setLastAccessTimeNow() {
 		this.lastAccessTime = System.currentTimeMillis();
@@ -192,6 +187,8 @@ public class CacheElement implements Serializable {
 
 	/**
 	 * Returns the time in seconds this element is to live.
+	 * 
+	 * @return the time in seconds this element is to live.
 	 */
 	public long getTimeToLiveSeconds() {
 		long now = System.currentTimeMillis();
@@ -200,7 +197,6 @@ public class CacheElement implements Serializable {
 
 	/**
 	 * For debugging only.
-	 * <p>
 	 * 
 	 * @return String representation
 	 */

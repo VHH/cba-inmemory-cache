@@ -15,7 +15,7 @@ import java.util.logging.Logger;
  * <code>LRUMemoryCache</code> provides a cache in which the Least Recently Used
  * items move to the end of the list.
  * 
- * @author Van Hai Ho <van.hai.ho@gmail.com>
+ * @author Van Hai Ho 
  *
  */
 public class LRUMemoryCache implements MemoryCache, Serializable {
@@ -102,7 +102,7 @@ public class LRUMemoryCache implements MemoryCache, Serializable {
 	 * 
 	 * @param key The key for the object to be removed from the cache.
 	 * @return true if object has been removed, false otherwise.
-     * @exception IOException
+     * @exception IOException Error when removing the object from the cache.
 	 */
 	public boolean remove(Serializable key) throws IOException {
 		boolean removed = false;
@@ -123,7 +123,7 @@ public class LRUMemoryCache implements MemoryCache, Serializable {
 
 	/**
      * Removes all cached items from the cache.
-     * @exception IOException
+     * @exception IOException Error when removing all objects from the cache.
 	 */
 	public void removeAll() throws IOException {
 		cacheMap.clear();
@@ -135,7 +135,7 @@ public class LRUMemoryCache implements MemoryCache, Serializable {
 	 * 
 	 * @param numberToFree The number of objects to be removed from the cached.
 	 * @return The number of objects that are actually removed from the cached.
-	 * @exception IOException
+	 * @exception IOException Error when removing objects from the cache.
 	 */
 	public int freeElements(int numberToFree) throws IOException {
 		int freed = 0;
@@ -161,7 +161,7 @@ public class LRUMemoryCache implements MemoryCache, Serializable {
 	 * 
 	 * @param key the key for the object to be retrieved.
 	 * @return The cached object for the specified key.
-	 * @exception IOException
+	 * @exception IOException Error when retrieving object from the cache.
 	 */
 	public CacheElement get(Serializable key) throws IOException {
 		CacheElement ce = null;
@@ -191,10 +191,10 @@ public class LRUMemoryCache implements MemoryCache, Serializable {
 	 * Constructs a cache element and puts it into the cache.
 	 * <p>
 	 * If the key or the value is null, and InvalidArgumentException is thrown.
-	 * <p>
+	 * </p>
+	 * 
 	 * @param key The key for the object to be cached.
 	 * @param val The object to be cached.
-	 * @exception IOExeption
 	 */
 	public void put(Object key, Object val) throws IOException {
 		if (key == null) {
@@ -220,7 +220,7 @@ public class LRUMemoryCache implements MemoryCache, Serializable {
 	 * Updates the cached object.
 	 * 
 	 * @param ce The cached object to be updated.
-	 * @exception IOException
+	 * @exception IOException Error when updating the cache.
 	 */
 	public void update(CacheElement ce) throws IOException {
 		// update access time
@@ -258,7 +258,7 @@ public class LRUMemoryCache implements MemoryCache, Serializable {
 	 * Determines if the element has exceeded its max life.
 	 * <p>
 	 * 
-	 * @param ce
+	 * @param ce The object to be checked.
 	 * @return true if the element is expired, else false.
 	 */
 	private boolean isExpired(CacheElement ce) {

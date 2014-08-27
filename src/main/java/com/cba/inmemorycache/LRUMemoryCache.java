@@ -6,8 +6,10 @@ package com.cba.inmemorycache;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -154,6 +156,31 @@ public class LRUMemoryCache implements MemoryCache, Serializable {
 			}
 		}
 		return freed;
+	}
+
+	/**
+	 * This will clean up the cache to remove objects that TTL has been expired.
+	 * 
+	 * @exception IOException Error when retrieving object from the cache.
+	 */
+	public void cleanup() throws IOException {
+		CacheElement ce = null;
+		Serializable key;
+
+		synchronized (cacheMap) {
+			Set<Serializable> keys = cacheMap.keySet();
+			for (Iterator<Serializable> i = keys.iterator(); i.hasNext(); ) {
+				key = i.next();
+				ce = cacheMap.get(key);
+	
+				// Check if the cache has been expired
+				if (ce == null || isExpired(ce)) {
+					// The TTL for this element has been expired, remove from cache
+					i.remove(); 
+					cacheList.remove(key);
+				}
+			}
+		}
 	}
 
 	/**

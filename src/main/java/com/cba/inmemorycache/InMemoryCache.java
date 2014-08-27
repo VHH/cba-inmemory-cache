@@ -1,20 +1,22 @@
 package com.cba.inmemorycache;
 
+import java.io.IOException;
 import java.util.Hashtable;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 
 /**
  * This is the main class for accessing MemoryCache.
  *
- * @author Van Hai Ho 
+ * @author Van Hai Ho
  *
  */
-public class InMemoryCache {
+public class InMemoryCache implements Runnable {
 
 	/** For logging */
-	private final static Logger log = Logger.getLogger(InMemoryCache.class.getName());
+	private final static Logger log = Logger.getLogger(InMemoryCache.class
+			.getName());
 
 	/** Caches managed by this cache manager */
 	private Hashtable<String, MemoryCache> caches = new Hashtable<String, MemoryCache>();
@@ -35,7 +37,8 @@ public class InMemoryCache {
 	 */
 	public static synchronized InMemoryCache getInstance() {
 		if (instance == null) {
-			log.log(Level.INFO, "Instance is null, creating with default config");
+			log.log(Level.INFO,
+					"Instance is null, creating with default config");
 			instance = new InMemoryCache();
 		}
 
@@ -63,4 +66,22 @@ public class InMemoryCache {
 
 		return cache;
 	}
+
+	/**
+	 * Main processing method for the InMemoryCache object. 
+	 */
+	public void run() {
+		cleanupCache();
+	}
+	
+	protected void cleanupCache() {
+		try {
+			for (Map.Entry<String, MemoryCache> entry : caches.entrySet()) {
+				entry.getValue().cleanup();;
+			}
+		} catch (IOException e) {
+			log.log(Level.INFO, e.getMessage());
+		}
+	}
+
 }

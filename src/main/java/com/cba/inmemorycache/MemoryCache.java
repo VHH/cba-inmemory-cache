@@ -42,10 +42,17 @@ public interface MemoryCache {
 	 * @param numberToFree the number of items to be removed.
 	 * @return the number that were removed. if you ask to free 5, but there are
 	 *         only 3, you will get 3.
-	 * @throws IOException Error when remove the items from the cache.
+	 * @throws IOException Error when removing the items from the cache.
 	 */
 	public int freeElements(int numberToFree) throws IOException;
 
+	/**
+	 * This instructs the memory cache to remove all objects in the cache that TTL is expired.
+	 * 
+	 * @throws IOException Error when cleaning up the cache.
+	 */
+	public void cleanup() throws IOException;
+	
 	/**
 	 * Gets an item from the cache
 	 * 

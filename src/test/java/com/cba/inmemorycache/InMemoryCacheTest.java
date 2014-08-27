@@ -56,7 +56,8 @@ public class InMemoryCacheTest extends TestCase {
 		for (int i = 0; i < items; i++) {
 			cachedValue = lruCache.get(i + ":key");
 			assertNotNull(cachedValue);
-			assertEquals(cacheName + " data " + i, ((CacheElement) cachedValue).getValue());
+			assertEquals(cacheName + " data " + i,
+					((CacheElement) cachedValue).getValue());
 		}
 
 		// Remove first 50 items
@@ -78,10 +79,13 @@ public class InMemoryCacheTest extends TestCase {
 	}
 
 	/**
-	 * Adds items to cache, gets them, and removes them.
-	 * @throws InterruptedException 
+	 * Adds items to cache with TTL of 10 seconds, wait for 11 seconds and check
+	 * that cached objects are removed from the cache.
+	 * 
+	 * @throws InterruptedException
 	 */
-	public void testExpiredCacheObjects() throws IOException, InterruptedException {
+	public void testExpiredCacheObjects() throws IOException,
+			InterruptedException {
 		String cacheName = "TestExpiredCachedObjects";
 		InMemoryCache memoryCache = InMemoryCache.getInstance();
 		LRUMemoryCache lruCache = (LRUMemoryCache) memoryCache
@@ -100,8 +104,9 @@ public class InMemoryCacheTest extends TestCase {
 			assertNotNull(lruCache.get(i + ":key"));
 		}
 
-        // Adding 11 seconds sleep before checking if the items will be removed from cache
-        Thread.sleep(11000);
+		// Adding 11 seconds sleep before checking if the items will be removed
+		// from cache
+		Thread.sleep(11000);
 
 		// Test that items have been removed as time to live has exceeded
 		for (int i = 0; i < items; i++) {
@@ -109,4 +114,59 @@ public class InMemoryCacheTest extends TestCase {
 		}
 
 	}
+
+	/**
+	 * Adds items to cache with TTL of 2 seconds, set create time and last
+	 * access time to 5 seconds ago for the first 10 items. Check that the first
+	 * 10 cached objects are removed from the cache and the remaining items are
+	 * still in the cache.
+	 *
+	 * @throws IOException
+	 * @throws InterruptedException
+	 *
+	 */
+	public void testCleanupExpiredObjects() throws IOException,
+			InterruptedException {
+		String cacheName = "TestCleanupCachedObjects";
+		InMemoryCache memoryCache = InMemoryCache.getInstance();
+		LRUMemoryCache lruCache = (LRUMemoryCache) memoryCache
+				.getCache(cacheName);
+		CacheElementAttributes attributes = new CacheElementAttributes();
+		attributes.setMaxLifeSeconds(2);
+		attributes.setMaxIdleTimeSeconds(2);
+		lruCache.setAttributes(attributes);
+
+		// Add items to cache
+		for (int i = 0; i < items; i++) {
+			lruCache.put(i + ":key", cacheName + " data " + i);
+		}
+
+		// Test that initial items have been cached
+		for (int i = 0; i < items; i++) {
+			assertNotNull(lruCache.get(i + ":key"));
+		}
+
+		assertEquals("There should be only 200 elements in the cache.", 200,
+				lruCache.getSize());
+		
+		for (int i = 0; i < 10; i++) {
+			String key = i + ":key";
+
+			CacheElement ce = lruCache.get(key);
+			assertNotNull("We should have received an element", ce);
+
+			// set this to 5 seconds ago.
+			ce.setLastAccessTime(System.currentTimeMillis() - 5000);
+		}
+
+		Thread runner = new Thread(memoryCache);
+		runner.run();
+
+		Thread.sleep(500);
+
+		assertEquals("There should be only 190 elements remain.", 190,
+				lruCache.getSize());
+
+	}
+
 }
